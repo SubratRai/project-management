@@ -22,13 +22,6 @@ public class UserController {
         return ResponseEntity.ok(userService.saveUser(user));
     }
 
-    //create user
-    @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody @Valid User user){
-        User savedUser = userService.saveUser(user);
-        return ResponseEntity.ok(savedUser);
-    }
-
     //get user by id
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable Long id){
@@ -37,7 +30,7 @@ public class UserController {
     }
 
     //all users
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<List<User>> getAllUsers(){
         return ResponseEntity.ok(userService.getAllUsers());
     }

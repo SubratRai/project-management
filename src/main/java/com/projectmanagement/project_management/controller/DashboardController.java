@@ -19,24 +19,21 @@ public class DashboardController {
 
     //Get dashboard report by project ID
     @GetMapping("/project/{projectId}")
-    public ResponseEntity<ProjectDashboardResponse> getProjectDashboard(@PathVariable Long projectId) {
+    public ResponseEntity<ProjectDashboardResponse> projectDashboard(@PathVariable Long projectId) {
         return ResponseEntity.ok(taskService.getProjectDashboard(projectId));
     }
     @GetMapping("/admin")
-
-    public String adminDashboard() {
-        return "Welcome to Admin Dashboard";
+    public ResponseEntity<String> adminDashboard() {
+        return ResponseEntity.ok("welcome to admin Dashboard");
     }
 
     @GetMapping("/manager")
-
-    public String managerDashboard() {
-        return "Welcome to Manager Dashboard";
+    public ResponseEntity<String> managerDashboard() {
+        return ResponseEntity.ok("welcome to manager Dashboard");
     }
 
     @GetMapping("/developer")
-
-    public String developerDashboard() {
-        return "Welcome to Developer Dashboard";
+    public ResponseEntity<String> developerDashboard() {
+        return ResponseEntity.ok("welcome to manager Dashboard");
     }
 }
