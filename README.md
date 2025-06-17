@@ -58,7 +58,8 @@ EndPoints:
 11. GET     /api/dashboard/admin          // admin dashboard   
 12. GET     /api/dashboard/manager        // manager dashboard   
 13. GET     /api/dashboard/developer      // developer dashboard   
-14. GET     /api/dashboard/project/{id}   // project dashboard   
+14. GET     /api/dashboard/project/{id}   // project dashboard
+15. POST    /api/ai/generate-user-stories // for stories generator using AI
 
 
 __Postman Collections__
