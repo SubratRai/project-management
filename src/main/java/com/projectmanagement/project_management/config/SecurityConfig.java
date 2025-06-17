@@ -39,6 +39,23 @@ public class SecurityConfig {
                 )
                 .logout(logout -> logout.permitAll());
         return http.build(); //Only one return
+
+
+     /*   @Bean
+        SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+            http
+                    // disable CSRF if you don't need it for API calls
+                    .csrf(csrf -> csrf.disable())
+                    .authorizeHttpRequests(auth -> auth
+                            // allow anonymous POSTs to your AI endpoint
+                            .requestMatchers("/api/ai/**").permitAll()
+                            // (optionally) allow actuator, swagger, etc.
+                            .anyRequest().authenticated()
+                    )
+                    // disable default login form
+                    .formLogin(form -> form.disable())
+                    .httpBasic(Customizer.withDefaults());  // or disable httpBasic() too
+            return http.build();*/
     }
     @Bean
     public PasswordEncoder passwordEncoder() {
