@@ -19,10 +19,8 @@ import java.util.*;
 @RequiredArgsConstructor
 public class TaskService {
 
-    @Autowired
     private ProjectRepository projectRepository;
 
-    @Autowired
     private UserRepository userRepository;
 
     private final TaskRepository taskRepository;
