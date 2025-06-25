@@ -34,6 +34,6 @@ public class DashboardController {
 
     @GetMapping("/developer")
     public ResponseEntity<String> developerDashboard() {
-        return ResponseEntity.ok("welcome to manager Dashboard");
+        return ResponseEntity.ok("welcome to developer Dashboard");
     }
 }
