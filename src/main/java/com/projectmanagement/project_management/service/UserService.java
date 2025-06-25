@@ -19,9 +19,7 @@ public class UserService {
     private final UserRepository userRepository;
 
     //create or update user
-    @Autowired
     private PasswordEncoder passwordEncoder;
-
 
     public User saveUser(User user){
 
