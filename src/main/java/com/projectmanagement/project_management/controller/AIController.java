@@ -16,7 +16,6 @@ import java.util.Map;
 @RequestMapping("/api/ai")
 public class AIController {
 
-   // @Autowired
     private final AIServices aiServices;
 
     public AIController(AIServices aiServices){
