@@ -3,6 +3,7 @@ package com.projectmanagement.project_management.controller;
 import com.projectmanagement.project_management.dto.UserStoryRequest;
 import com.projectmanagement.project_management.dto.UserStoryResponse;
 import com.projectmanagement.project_management.service.AIServices;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,7 +21,7 @@ public class AIController {
     private final AIServices aiServices;
 
     @PostMapping("/generate-user-stories")
-    public ResponseEntity<UserStoryResponse> generateUserStories(@RequestBody UserStoryRequest request) {
+    public ResponseEntity<UserStoryResponse> generateUserStories(@RequestBody @Valid UserStoryRequest request) {
         List<String> stories = aiServices.generateUserStories(request.getDescription());
 
         UserStoryResponse response = new UserStoryResponse();

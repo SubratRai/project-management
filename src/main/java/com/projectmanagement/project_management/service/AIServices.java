@@ -25,6 +25,10 @@ public class AIServices {
     }
 
     public List<String> generateUserStories(String description) {
+        if (description == null || description.isBlank()) {
+            throw new IllegalArgumentException("Project description is required");
+        }
+
         String prompt = "Generate 3 user stories based on this project description:\n" + description;
 
         Map<String, Object> body = Map.of(
@@ -47,6 +51,10 @@ public class AIServices {
 
         String content = (String) ((Map<?, ?>) ((Map<?, ?>) ((List<?>) response.get("choices")).get(0))
                 .get("message")).get("content");
+
+        if (content == null || content.isBlank()) {
+            throw new IllegalStateException("Empty content from AI provider");
+        }
 
         return Arrays.stream(content.split("\n"))
                 .map(String::trim)
