@@ -10,22 +10,22 @@ import com.projectmanagement.project_management.repository.ProjectRepository;
 import com.projectmanagement.project_management.repository.TaskRepository;
 import com.projectmanagement.project_management.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
 public class TaskService {
 
-    private ProjectRepository projectRepository;
-
-    private UserRepository userRepository;
-
+    private final ProjectRepository projectRepository;
+    private final UserRepository userRepository;
     private final TaskRepository taskRepository;
 
-    //create or update task
     public Task createTask(TaskRequest taskRequest) {
         Project project = projectRepository.findById(taskRequest.getProjectId())
                 .orElseThrow(() -> new NoSuchElementException("Project not found with ID: " + taskRequest.getProjectId()));
@@ -45,24 +45,20 @@ public class TaskService {
 
         return taskRepository.save(task);
     }
-    //Get Task by Id
 
     public Task getTaskById(Long id) {
         return taskRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Task not found with ID: " + id));
     }
 
-    //get tasks by project id
     public List<Task> getTasksByProjectId(Long projectId) {
         return taskRepository.findByProjectId(projectId);
     }
 
-    // Get tasks by user id
     public List<Task> getTasksByUserId(Long userId) {
         return taskRepository.findByAssignedToId(userId);
     }
 
-    //update task status
     public void updateTaskStatus(Long taskId, TaskStatus status) {
         Task task = taskRepository.findById(taskId)
                 .orElseThrow(() -> new NoSuchElementException("Task not found with ID: " + taskId));
@@ -70,8 +66,7 @@ public class TaskService {
         taskRepository.save(task);
     }
 
-    //delete task
-    public void deleteTask(Long id){
+    public void deleteTask(Long id) {
         taskRepository.deleteById(id);
     }
 
@@ -85,15 +80,16 @@ public class TaskService {
         int overdue = 0;
         int completed = 0;
 
-        // Count by status
         Map<TaskStatus, Integer> statusCounts = new HashMap<>();
         for (Task task : tasks) {
             TaskStatus status = task.getStatus();
             statusCounts.put(status, statusCounts.getOrDefault(status, 0) + 1);
 
-            if (status == TaskStatus.DONE) completed++;
+            if (status == TaskStatus.DONE) {
+                completed++;
+            }
 
-            if (task.getDeadline() != null && task.getDeadline().isBefore(java.time.LocalDate.now())
+            if (task.getDeadline() != null && task.getDeadline().isBefore(LocalDate.now())
                     && task.getStatus() != TaskStatus.DONE) {
                 overdue++;
             }
@@ -106,8 +102,7 @@ public class TaskService {
                 .totalTasks(total)
                 .taskStatusCounts(statusCounts)
                 .overdueTasks(overdue)
-                .completionPercentage(Math.round(percent * 100.0) / 100.0) // round to 2 decimal
+                .completionPercentage(Math.round(percent * 100.0) / 100.0)
                 .build();
     }
-
 }

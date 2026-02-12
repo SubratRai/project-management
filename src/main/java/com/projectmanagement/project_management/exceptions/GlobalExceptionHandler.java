@@ -39,6 +39,12 @@ public class GlobalExceptionHandler {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Resource not found: " + ex.getMessage());
         }
 
+
+        @ExceptionHandler(IllegalArgumentException.class)
+        public ResponseEntity<String> handleBadRequest(IllegalArgumentException ex) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+        }
+
         //Catch All Generic Exceptions which doesn't handle generally
         @ExceptionHandler(Exception.class)
         public ResponseEntity<String> handleGeneric(Exception ex) {
