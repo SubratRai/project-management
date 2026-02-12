@@ -17,23 +17,27 @@ public class DashboardController {
 
     private final TaskService taskService;
 
-    //Get dashboard report by project ID
     @GetMapping("/project/{projectId}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     public ResponseEntity<ProjectDashboardResponse> projectDashboard(@PathVariable Long projectId) {
         return ResponseEntity.ok(taskService.getProjectDashboard(projectId));
     }
+
     @GetMapping("/admin")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> adminDashboard() {
-        return ResponseEntity.ok("welcome to admin Dashboard");
+        return ResponseEntity.ok("Welcome to admin dashboard");
     }
 
     @GetMapping("/manager")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     public ResponseEntity<String> managerDashboard() {
-        return ResponseEntity.ok("welcome to manager Dashboard");
+        return ResponseEntity.ok("Welcome to manager dashboard");
     }
 
     @GetMapping("/developer")
+    @PreAuthorize("hasAnyRole('ADMIN', 'DEVELOPER')")
     public ResponseEntity<String> developerDashboard() {
-        return ResponseEntity.ok("welcome to developer Dashboard");
+        return ResponseEntity.ok("Welcome to developer dashboard");
     }
 }

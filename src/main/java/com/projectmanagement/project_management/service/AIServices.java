@@ -3,8 +3,10 @@ package com.projectmanagement.project_management.service;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
-import java.util.*;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,13 +29,11 @@ public class AIServices {
 
         Map<String, Object> body = Map.of(
                 "model", "mixtral-8x7b-32768",
-                "messages", List.of(
-                        Map.of("role", "user", "content", prompt)
-                )
+                "messages", List.of(Map.of("role", "user", "content", prompt))
         );
 
-        Map response = this.webClient.post()
-                .uri(groqApiBase+ "/chat/completions")
+        Map<?, ?> response = webClient.post()
+                .uri(groqApiBase + "/chat/completions")
                 .header("Authorization", "Bearer " + groqApiKey)
                 .header("Content-Type", "application/json")
                 .bodyValue(body)
@@ -41,11 +41,12 @@ public class AIServices {
                 .bodyToMono(Map.class)
                 .block();
 
-        // ✅ Yaha content define ho raha hai
-        String content = (String) ((Map)((Map)((List) response.get("choices")).get(0)).get("message")).get("content");
+        if (response == null || response.get("choices") == null) {
+            throw new IllegalStateException("Invalid response from AI provider");
+        }
 
-        // ❌ Doosri baar content define karne ki zarurat nahi
-        // return content; <-- galat
+        String content = (String) ((Map<?, ?>) ((Map<?, ?>) ((List<?>) response.get("choices")).get(0))
+                .get("message")).get("content");
 
         return Arrays.stream(content.split("\n"))
                 .map(String::trim)
@@ -53,4 +54,3 @@ public class AIServices {
                 .collect(Collectors.toList());
     }
 }
-
